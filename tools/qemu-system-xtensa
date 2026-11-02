@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+APP_EXEC="${ESP32MINE_QEMU_APP_EXEC:?QEMU app executable is not configured}"
+APP_DIR="$(cd "$(dirname "$APP_EXEC")/../.." && pwd)"
+
+# Running the executable by path keeps it attached to Terminal as an
+# unbundled SDL child.  Launch the real application bundle through Launch
+# Services instead. `-W` makes this wrapper retain idf.py's foreground
+# lifetime: it returns only when the QEMU application closes.
+exec /usr/bin/open -n -W "$APP_DIR" --args "$@"
